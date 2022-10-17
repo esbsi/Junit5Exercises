@@ -1,6 +1,7 @@
 package be.abis.exercise.model;
 
 import be.abis.exercise.exception.PersonShouldBeAdultException;
+import be.abis.exercise.exception.SalaryTooLowException;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -13,6 +14,7 @@ public class Person implements Comparable<Person>{
 	private String lastName;
 	private LocalDate birthDate;
 	private Company company;
+	private double grossSalary;
 	
 	public Person(int personNumber, String firstName, String lastName, LocalDate birthDay) {
 		this.personNumber = personNumber;
@@ -24,6 +26,15 @@ public class Person implements Comparable<Person>{
 	public Person(int personNumber, String firstName, String lastName, LocalDate birthDate, Company company) {
 		this(personNumber,firstName,lastName,birthDate);
 		this.company = company;
+	}
+
+	public Person(int personNumber, String firstName, String lastName, LocalDate birthDate, Company company, double grossSalary) {
+		this.personNumber = personNumber;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.birthDate = birthDate;
+		this.company = company;
+		this.grossSalary = grossSalary;
 	}
 
 	public int getPersonNumber() {
@@ -66,6 +77,14 @@ public class Person implements Comparable<Person>{
 		this.company = company;
 	}
 
+	public double getGrossSalary() {
+		return grossSalary;
+	}
+
+	public void setGrossSalary(double grossSalary) {
+		this.grossSalary = grossSalary;
+	}
+
 	@Override
 	public String toString() {
 		String formattedDate= DateTimeFormatter.ofPattern("dd/MM/yyyy").format(this.getBirthDate());
@@ -82,6 +101,13 @@ public class Person implements Comparable<Person>{
 		int age = Period.between(birthDate, LocalDate.now()).getYears();
 		if (age<18) throw new PersonShouldBeAdultException(this.getFirstName() + ", you are too young");
 		return age;
+	}
+
+	public double calculateNetSalary() throws SalaryTooLowException {
+		 double netSalary = grossSalary * (1.0 - company.calculateTaxToPay()/100.0);
+		if (netSalary<1500.0) {
+			throw new SalaryTooLowException();
+		} else return netSalary;
 	}
 
 	@Override

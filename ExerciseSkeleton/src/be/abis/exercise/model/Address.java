@@ -1,5 +1,9 @@
 package be.abis.exercise.model;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+
 public class Address {
 	
 	private String street;
@@ -17,6 +21,41 @@ public class Address {
 		this.country = country;
 		this.countryCode = countryCode;
 	}
+
+
+	// business
+
+	public Boolean isBelgianZipCodeNumeric(){
+		if (zipCode == null){
+			return false;
+		}
+		try {
+			int zip = Integer.parseInt(zipCode);
+		} catch (NumberFormatException e){
+			return false;
+		}
+		return true;
+	}
+
+	public void writeToFile() throws IOException {
+		try(BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\temp\\javacourses\\JUnitAddress.txt"))) {
+			writer.append(this.toString());
+		}
+	}
+
+	@Override
+	public String toString() {
+		return "Address{" +
+				"street='" + street + '\'' +
+				", nr='" + nr + '\'' +
+				", zipCode='" + zipCode + '\'' +
+				", town='" + town + '\'' +
+				", country='" + country + '\'' +
+				", countryCode='" + countryCode + '\'' +
+				'}';
+	}
+
+	// getset
 
 	public String getStreet() {
 		return street;
