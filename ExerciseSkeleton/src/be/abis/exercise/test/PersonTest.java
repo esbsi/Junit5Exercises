@@ -36,11 +36,11 @@ public class PersonTest {
     void setUp(){
         person1 = new Person(1, "Jef", "Dhont", LocalDate.parse("1980-10-01"));
         person1.setGrossSalary(2000.0);
-        person1.setCompany(mockCompany);
+
         person2 = new Person(2, "Joske", "Demeuleneire", LocalDate.parse("2020-10-01"));
         person2.setGrossSalary(4000.0);
         person2.setCompany(mockCompany);
-        when(mockCompany.calculateTaxToPay()).thenReturn(51.0);
+
     }
 
 
@@ -91,6 +91,8 @@ public class PersonTest {
 
     @Test
     public void shouldThrowSalaryTooLowException() {
+        when(mockCompany.calculateTaxToPay()).thenReturn(51.0);
+        person1.setCompany(mockCompany);
         assertThrows(SalaryTooLowException.class, () -> person1.calculateNetSalary());
     }
 
